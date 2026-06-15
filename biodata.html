@@ -1,1 +1,965 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
 
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Yagnik Haeshbhai Sorathiya</title>
+
+    <!-- Favicon (change if you want) -->
+    <link rel="icon" type="image/x-icon"
+        href="https://lh3.googleusercontent.com/pw/AP1GczMCU6sTsea8-tz0r0TIwdzzLYcOkavf4vIagDR52z0IxdQ7LA0JByOijtC4rrdqImUlF3XYlRTBga0WpLv4qt7KUHqS4tJBVeWz3uC3cLWiITzmX3ilkKeOOXzFLa9qkzCYT8CAvdD8boBIe7LySPCy8g=w651-h869-s-no-gm?authuser=0">
+
+    <!-- Animate.css + WOW.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400..800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            /* deep navy */
+            --primary-soft: #1e293b;
+            /* slate */
+            --accent: #d4af37;
+            /* royal gold */
+
+            --bg-gradient-start: #020617;
+            /* near black */
+            --bg-gradient-end: #0b1120;
+            /* midnight */
+
+            --glass-bg: rgba(15, 23, 42, 0.92);
+            --glass-border: rgba(212, 175, 55, 0.45);
+
+            --text-main: #e5e7eb;
+            --text-muted: #cbd5e1;
+            --text-strong: #ffffff;
+
+            --shadow-strong: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+
+
+        #lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            transition: transform 0.08s ease-out;
+            touch-action: none;
+            /* required for pinch zoom */
+            cursor: grab;
+        }
+
+        #lightbox-img:active {
+            cursor: grabbing;
+        }
+
+
+        /* ---------- LANGUAGE HANDLING ---------- */
+
+        /* fonts */
+        .lang-en {
+            font-family: "Lexend", sans-serif, -apple-system, "Lexend", sans-serif;
+            font-optical-sizing: auto;
+            font-style: normal;
+        }
+
+        .lang-gu {
+            font-family: "Baloo Bhai 2", sans-serif, -apple-system, "Baloo Bhai 2", sans-serif;
+            font-weight: 500;
+        }
+
+        /* visibility: default = English */
+        [data-lang="en"] .lang-en {
+            display: inline;
+        }
+
+        [data-lang="en"] .lang-gu {
+            display: none;
+        }
+
+        /* when switch ON => Gujarati */
+        [data-lang="gu"] .lang-en {
+            display: none;
+        }
+
+        [data-lang="gu"] .lang-gu {
+            display: inline;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 12px;
+
+            /* background inspired by your photo:
+     top = warm mustard, bottom = deep green foliage  */
+            background:
+                radial-gradient(circle at top, rgba(212, 175, 55, 0.18), transparent 40%),
+                linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+
+        }
+
+
+        .page-wrapper {
+            width: 100%;
+            max-width: 470px;
+        }
+
+        .card-shell {
+            position: relative;
+            border-radius: 28px;
+            padding: 18px 14px 20px;
+            background: linear-gradient(135deg, rgba(148, 163, 184, 0.06), rgba(15, 23, 42, 0.9));
+            box-shadow: var(--shadow-strong);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            overflow: hidden;
+        }
+
+        /* subtle glow behind */
+        .card-shell::before {
+            content: "";
+            position: absolute;
+            inset: -30%;
+            background:
+                radial-gradient(circle at 0 0, rgba(96, 165, 250, 0.12), transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(249, 115, 22, 0.12), transparent 50%);
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Profile / hero section */
+        .hero-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .avatar-ring {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            padding: 3px;
+            background: conic-gradient(var(--accent),
+                    #f6e27a,
+                    var(--accent));
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(15, 23, 42, 0.9);
+            background: #020617;
+        }
+
+        .avatar-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            object-position: bottom;
+        }
+
+        .name-main {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-strong);
+            line-height: 1.3;
+        }
+
+        .role-main {
+            margin-top: 4px;
+            font-size: 0.96rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            /* border: 1px solid rgba(148, 163, 184, 0.7); */
+            /* background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 64, 175, 0.7)); */
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.13em;
+            /* color: #e5e7eb; */
+            margin-top: 6px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        .tag-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.9);
+        }
+
+        /* Language switch + top actions */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+            margin: 12px 2px 8px;
+            flex-wrap: wrap;
+        }
+
+        .lang-switch-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px;
+        }
+
+        .lang-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* Uiverse switch (modified) */
+        .switch {
+            font-size: 0.76rem;
+            position: relative;
+            display: inline-block;
+            width: 8.6em;
+            height: 2.4em;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .switch .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #020617;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.8);
+            color: #e5e7eb;
+            transition: all 0.35s ease;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.8);
+        }
+
+        .switch .title {
+            position: absolute;
+            top: 50%;
+            left: 62%;
+            transform: translate(-50%, -50%);
+            font-weight: 500;
+            user-select: none;
+            transition: all 0.35s ease;
+        }
+
+        .switch .ball {
+            position: absolute;
+            top: 50%;
+            left: 3px;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e5e7eb, #fefce8);
+            box-shadow:
+                0 6px 14px rgba(15, 23, 42, 0.8),
+                0 0 0 3px rgba(15, 23, 42, 0.9);
+            transition: all 0.35s ease;
+        }
+
+        .switch .ball .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #1f2937;
+            font-size: 0.8rem;
+        }
+
+        .switch input:checked+.slider {
+            background: linear-gradient(135deg, #0b1120, #075985);
+            border-color: rgba(96, 165, 250, 0.85);
+        }
+
+        .switch input:checked+.slider .title {
+            left: 32%;
+        }
+
+        .switch input:checked+.slider .ball {
+            left: calc(100% - 35px);
+            transform: translateY(-50%) rotate(360deg);
+            box-shadow:
+                0 0 0 3px rgba(56, 189, 248, 0.7),
+                0 10px 20px rgba(15, 23, 42, 0.9);
+        }
+
+        /* small action pill (optional) */
+        .action-pill {
+            font-size: 0.74rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.9);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+        }
+
+        /* Sections / glass panels */
+        .section-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .glass-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-size: 0.92rem;
+            margin-bottom: 4px;
+            gap: 6px;
+        }
+
+        .label {
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .value {
+            text-align: right;
+            color: #e5e7eb;
+        }
+
+        .value span,
+        .label span {
+            display: inline-block;
+        }
+
+        .para {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: #e5e7eb;
+        }
+
+        .subtext {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .address {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #e5e7eb;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        /* Photo gallery */
+        .photo-section-title {
+            margin-top: 8px;
+        }
+
+        .photo-grid {
+            display: flex;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .photo-card {
+            flex: 1;
+            position: relative;
+            border-radius: 18px;
+            padding: 6px;
+            background: radial-gradient(circle at top, rgba(248, 250, 252, 0.08), transparent 60%),
+                rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.9);
+            overflow: hidden;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            border-radius: 14px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .photo-card:hover img {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.9);
+        }
+
+        .photo-tag {
+            position: absolute;
+            bottom: 6px;
+            left: 10px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            background: rgba(15, 23, 42, 0.85);
+            color: #e5e7eb;
+            border: 1px solid rgba(148, 163, 184, 0.8);
+        }
+
+        /* FULLSCREEN LIGHTBOX */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            overflow: hidden;
+            /* important for panning */
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 42px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 10000;
+        }
+
+        #lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            touch-action: none;
+            /* allows pinch zoom */
+            transform-origin: center center;
+            transition: transform 0.08s ease-out;
+            cursor: grab;
+        }
+
+        #lightbox-img:active {
+            cursor: grabbing;
+        }
+
+        @media (max-width: 480px) {
+            .card-shell {
+                padding: 14px 12px 16px;
+            }
+
+            .name-main {
+                font-size: 1.4rem;
+            }
+
+            .photo-grid {
+                flex-direction: row;
+            }
+        }
+
+        /* Language visibility (again for safety) */
+        .lang-gu {
+            display: none;
+        }
+
+        [data-lang="gu"] .lang-en {
+            display: none;
+        }
+
+        [data-lang="gu"] .lang-gu {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <main class="card-shell wow animate__animated animate__fadeInUp" id="biodata-card">
+            <div class="card-inner">
+
+                <!-- HERO / AVATAR -->
+                <section class="hero-top wow animate__animated animate__fadeInDown" data-wow-delay="0.1s">
+                    <div class="avatar-ring">
+                        <div class="avatar-inner">
+                            <!-- CHANGE PROFILE PHOTO HERE -->
+                            <img src="https://lh3.googleusercontent.com/pw/AP1GczMCU6sTsea8-tz0r0TIwdzzLYcOkavf4vIagDR52z0IxdQ7LA0JByOijtC4rrdqImUlF3XYlRTBga0WpLv4qt7KUHqS4tJBVeWz3uC3cLWiITzmX3ilkKeOOXzFLa9qkzCYT8CAvdD8boBIe7LySPCy8g=w651-h869-s-no-gm?authuser=0"
+                                alt="Profile Photo">
+                        </div>
+                    </div>
+
+                    <div class="name-main">
+                        <span class="lang lang-en">Yagnik Hareshbhai Sorathiya</span>
+                        <span class="lang lang-gu">યાજ્ઞિક હરેશભાઈ સોરઠિયા</span>
+                    </div>
+
+                    <div class="role-main">
+                        <span class="lang lang-en">Akasha Logitrans LLP - CEO</span>
+                        <span class="lang lang-gu">આકાશ લોજીટ્રાન્સ એલએલપી - સીઈઓ</span>
+                    </div>
+                    <div class="role-main">
+                        <span class="lang lang-en">Hotels - Rajkot</span>
+                        <span class="lang lang-gu">હોટેલ્સ - રાજકોટ</span>
+                    </div>
+                    <div class="role-main">
+                        <span class="lang lang-en">BY Garudaa Group</span>
+                        <span class="lang lang-gu">ગરુડા ગ્રુપ દ્વારા</span>
+                    </div>
+                    <div class="tag-badge">
+                        <span class="tag-dot"></span>
+                        <span class="lang lang-en">Biodata</span>
+                        <span class="lang lang-gu">બાયોડેટા</span>
+                    </div>
+                </section>
+
+                <!-- TOP BAR: LANGUAGE SWITCH -->
+                <div class="top-bar wow animate__animated animate__fadeInUp" data-wow-delay="0.15s">
+                    <div class="lang-switch-container">
+                        <span class="lang-label">
+                            <span class="lang lang-en">Language</span>
+                            <span class="lang lang-gu">ભાષા</span>
+                        </span>
+
+                        <label class="switch">
+                            <input type="checkbox" id="langToggle" onchange="toggleLanguage(this)">
+                            <span class="slider">
+                                <span class="title" id="langTitle">English</span>
+                                <span class="ball">
+                                    <span class="icon">અ</span>
+                                </span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SECTIONS -->
+                <div class="section-grid">
+
+                    <!-- PERSONAL DETAILS -->
+                    <section class="glass-section wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                        <div class="section-title">
+                            <span class="lang lang-en">Personal Details</span>
+                            <span class="lang lang-gu">વ્યક્તિગત વિગતો</span>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="label">
+                                <span class="lang lang-en">Date of Birth</span>
+                                <span class="lang lang-gu">જન્મ તારીખ</span>
+                            </div>
+                            <div class="value">
+                                <span class="lang lang-en">11-08-2002</span>
+                                <span class="lang lang-gu">૧૧-૦૮-૨૦૦૨</span>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="label">
+                                <span class="lang lang-en">Height &amp; Weight</span>
+                                <span class="lang lang-gu">ઊંચાઈ &amp; વજન</span>
+                            </div>
+                            <div class="value">
+                                <span class="lang lang-en">5.6 ft, 58 kg</span>
+                                <span class="lang lang-gu">૫.૬ ફૂટ, ૫૮ કિલો</span>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="label">
+                                <span class="lang lang-en">Mobile</span>
+                                <span class="lang lang-gu">મોબાઇલ</span>
+                            </div>
+                            <div class="value">
+                                <a href="tel:+918140622780" style="text-decoration:none; color:inherit;">
+                                    <span class="lang lang-en">99249 29129</span>
+                                    <span class="lang lang-gu">૯૯૨૪૯ ૨૯૧૨૯</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- EDUCATION -->
+                    <section class="glass-section wow animate__animated animate__fadeInUp" data-wow-delay="0.25s">
+                        <div class="section-title">
+                            <span class="lang lang-en">Education</span>
+                            <span class="lang lang-gu">શિક્ષણ</span>
+                        </div>
+
+                        <p class="para">
+                            <span class="label">
+                                <span class="lang lang-en">Highest Qualification:</span>
+                                <span class="lang lang-gu">ઉચ્ચતમ લાયકાત:</span>
+                            </span>
+                            <br>
+                            <span class="value">
+                                <span class="lang lang-en">Aircraft Maintenance Engineering,</span>
+                                <span class="lang lang-gu">એરક્રાફ્ટ મેન્ટેનન્સ એન્જિનિયરિંગ,</span>
+                            </span>
+                            <br>
+                            <span class="value">
+                                <span class="lang lang-en">Data Scientist OR Data Analyst.</span>
+                                <span class="lang lang-gu">ડેટા સાયન્ટિસ્ટ અથવા ડેટા એનાલિસ્ટ.</span>
+                            </span>
+                        </p>
+                    </section>
+
+                 <!-- FAMILY DETAILS -->
+<section class="glass-section wow animate__animated animate__fadeInUp" data-wow-delay="0.3s">
+    <div class="section-title">
+        <span class="lang lang-en">Family Details</span>
+        <span class="lang lang-gu">કુટુંબની વિગતો</span>
+    </div>
+
+    <div class="info-row">
+        <div class="label">
+            <span class="lang lang-en">Father</span>
+            <span class="lang lang-gu">પિતાનું નામ</span>
+        </div>
+        <div class="value">
+            <span class="lang lang-en">Hareshbhai Ramjibhai Sorathiya</span>
+            <span class="lang lang-gu">હરેશભાઈ રામજીભાઈ સોરઠીયા</span>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="label">
+            <span class="lang lang-en">Father's Mobile</span>
+            <span class="lang lang-gu">પિતાનો મોબાઇલ</span>
+        </div>
+        <div class="value">
+            <a href="tel:+919879467430" style="text-decoration:none; color:inherit;">
+                <span class="lang lang-en">98794 67430</span>
+                <span class="lang lang-gu">૯૮૭૯૪ ૬૭૪૩૦</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="label">
+            <span class="lang lang-en">Profession</span>
+            <span class="lang lang-gu">વ્યવસાય</span>
+        </div>
+        <div class="value">
+            <span class="lang lang-en">Farmer</span>
+            <span class="lang lang-gu">ખેડૂત</span>
+        </div>
+    </div>
+
+    <div class="info-row" style="margin-top:6px;">
+        <div class="label">
+            <span class="lang lang-en">Mother</span>
+            <span class="lang lang-gu">માતાનું નામ</span>
+        </div>
+        <div class="value">
+            <span class="lang lang-en">Ranjanben Hareshbhai Sorathiya</span>
+            <span class="lang lang-gu">રંજનબેન હરેશભાઈ સોરઠીયા</span>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="label">
+            <span class="lang lang-en">Sister</span>
+            <span class="lang lang-gu">બહેન</span>
+        </div>
+        <div class="value">
+            <span class="lang lang-en">Priyanka Hareshbhai Sorathiya (CSE)</span>
+            <span class="lang lang-gu">પ્રિયંકા હરેશભાઈ સોરઠીયા (CSE)</span>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="label">
+            <span class="lang lang-en">Sister</span>
+            <span class="lang lang-gu">બહેન</span>
+        </div>
+        <div class="value">
+            <span class="lang lang-en">Bhoomikaben Kuldeepbhai Trapasiya (BHMS)</span>
+            <span class="lang lang-gu">ભૂમિકાબેન કુલદીપભાઈ ત્રાપસીયા (BHMS)</span>
+        </div>
+    </div>
+
+    <div class="info-row">
+        <div class="label">
+            <span class="lang lang-en">Native Place:</span>
+            <span class="lang lang-gu">મૂળ ગામ:</span>
+        </div>
+        <div class="value">
+            <a href="https://maps.app.goo.gl/VHftHB8N6Re3BxA67" target="_blank" style="text-decoration:none;">
+                <span class="lang lang-en">Mota Devaliya, Babra, Amreli</span>
+                <span class="lang lang-gu">મોટા દેવળીયા, બાબરા, અમરેલી</span>
+            </a>
+        </div>
+    </div>
+                    </section>
+
+                    <!-- NATIVE & MATERNAL -->
+                    <section class="glass-section wow animate__animated animate__fadeInUp" data-wow-delay="0.35s">
+                        <div class="section-title">
+                            <span class="lang lang-en">Maternal Relatives:</span>
+                            <span class="lang lang-gu">મામેરા સંબંધીઓ:</span>
+                        </div>
+                        <p class="para" style="margin-top:6px;">
+                            <span class="lang lang-en">
+                               EX. Jivarajbhai Punabhai Gadhiya
+                            </span>
+                            <span class="lang lang-gu">
+                               સ્વ. જીવરાજભાઈ પુનાભાઈ ગઢીયા
+                            </span>
+                        </p>
+                        <p class="para" style="margin-top:6px;">
+                            <span class="lang lang-en">
+                                Rohitbhai Punabhai Gadhiya
+                            </span>
+                            <span class="lang lang-gu">
+                                રોહિતભાઈ પુનાભાઈ ગઢીયા
+                            </span>
+                        </p>
+
+                        <p class="subtext">
+                            <a href="https://maps.app.goo.gl/FXiTQ5597nNmdbnW6" target="_blank"
+                                style="text-decoration:none;">
+                                <span class="lang lang-en">Maternal native: Samdhiyala(Bagasara)</span>
+                                <span class="lang lang-gu">મામાનું ગામ: સમઢીયાલા (બગસરા)</span>
+                            </a>
+                        </p>
+                    </section>
+
+                    <!-- ADDRESSES -->
+                    <section class="glass-section wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                        <div class="section-title">
+                            <span class="lang lang-en">Addresses</span>
+                            <span class="lang lang-gu">સરનામાં</span>
+                        </div>
+
+                        <p class="address">
+                            <a href="https://maps.app.goo.gl/pyRfsNpXJXjqnDm49" target="_blank"
+                                style="text-decoration:none;">
+                                <span class="lang lang-en">
+                                    Rajkot,Gujarat
+                                </span>
+                                <span class="lang lang-gu">
+                                   રરાજકોટ, ગુજરાત
+                                </span>
+                            </a>
+                        </p>
+
+                    </section>
+                    <!-- FULLSCREEN LIGHTBOX -->
+                    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+                        <span class="lightbox-close">&times;</span>
+                        <img id="lightbox-img" src="" alt="Full View">
+                    </div>
+
+                    <!-- MORE PHOTOS -->
+                    <section class="glass-section wow animate__animated animate__fadeInUp" data-wow-delay="0.45s">
+                        <div class="section-title photo-section-title">
+                            <span class="lang lang-en">More Photos</span>
+                            <span class="lang lang-gu">ફોટો</span>
+                        </div>
+
+                        <div class="photo-grid">
+                            <div class="photo-card">
+                                <img src="https://lh3.googleusercontent.com/pw/AP1GczNPUEL9Gh-6iVXpp25nS29zShzl6e8ApcaVzEGciaxH4M6JDrcZY0XnOaHesx2LKUrV33-4ZzBM8mOEk1T4WSk6zmuE0PmfDKag8sq-LSdLugg2y2I5xD-A2UYCUyzT-DwSS8L3DIqkNuKbIHYeZ4evlA=w579-h869-s-no-gm?authuser=0"
+                                    alt="Photo 1" onclick="openLightbox(this.src)">
+                            </div>
+
+                            <div class="photo-card">
+                                <img src="https://lh3.googleusercontent.com/pw/AP1GczMN0Ky4VZtV7KbFOw_ndbgni4JAA1YfwaJNrMY8qg_b90BzRepIeNMSJNO2qRHvqp1wtRCQT1Z9YMY8V9SioZch4IxbuwTzY8G1a6oXGFjurMrErNf9I0P3jJmQUz_UvAcayoVpOuoB9Hh2CaSg753nRQ=w651-h869-s-no-gm?authuser=0"
+                                    alt="Photo 2" onclick="openLightbox(this.src)">
+                            </div>
+                        </div>
+
+                    </section>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- FULLSCREEN LIGHTBOX -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Full view">
+    </div>
+
+    <script>
+        new WOW().init();
+
+        // LANGUAGE TOGGLE
+        function toggleLanguage(checkbox) {
+            const isGujarati = checkbox.checked;
+            document.documentElement.setAttribute('data-lang', isGujarati ? 'gu' : 'en');
+            const title = document.getElementById('langTitle');
+            title.textContent = isGujarati ? 'ગુજરાતી' : 'English';
+        }
+
+    </script>
+
+    <script>
+        /* ADVANCED LIGHTBOX: Pinch Zoom + Mouse Zoom + Drag/Pan */
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+
+        let scale = 1, lastScale = 1, startDistance = 0;
+        let posX = 0, posY = 0, lastPosX = 0, lastPosY = 0;
+        let isDragging = false;
+
+        function openLightbox(src) {
+            scale = 1;
+            lastScale = 1;
+            posX = posY = lastPosX = lastPosY = 0;
+
+            lightboxImg.src = src;
+            updateTransform();
+            lightbox.style.display = "flex";
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = "none";
+        }
+
+        function updateTransform() {
+            lightboxImg.style.transform =
+                `translate(${posX}px, ${posY}px) scale(${scale})`;
+        }
+
+        /* ----- TOUCH EVENTS (MOBILE) ----- */
+        lightboxImg.addEventListener("touchstart", function (e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                startDistance = getDistance(e.touches[0], e.touches[1]);
+                lastScale = scale;
+            } else if (e.touches.length === 1 && scale > 1) {
+                isDragging = true;
+                lastPosX = e.touches[0].clientX - posX;
+                lastPosY = e.touches[0].clientY - posY;
+            }
+        }, { passive: false });
+
+        lightboxImg.addEventListener("touchmove", function (e) {
+            if (e.touches.length === 2 && startDistance > 0) {
+                e.preventDefault();
+                const newDistance = getDistance(e.touches[0], e.touches[1]);
+                scale = clamp((newDistance / startDistance) * lastScale, 1, 4);
+                updateTransform();
+            } else if (e.touches.length === 1 && isDragging && scale > 1) {
+                posX = e.touches[0].clientX - lastPosX;
+                posY = e.touches[0].clientY - lastPosY;
+                updateTransform();
+            }
+        }, { passive: false });
+
+        lightboxImg.addEventListener("touchend", () => {
+            isDragging = false;
+            startDistance = 0;
+        });
+
+        /* ----- MOUSE EVENTS (DESKTOP) ----- */
+        lightboxImg.addEventListener("mousedown", function (e) {
+            if (scale > 1) {
+                isDragging = true;
+                lastPosX = e.clientX - posX;
+                lastPosY = e.clientY - posY;
+            }
+        });
+
+        window.addEventListener("mousemove", function (e) {
+            if (isDragging) {
+                posX = e.clientX - lastPosX;
+                posY = e.clientY - lastPosY;
+                updateTransform();
+            }
+        });
+
+        window.addEventListener("mouseup", function () {
+            isDragging = false;
+        });
+
+        /* Mouse wheel zoom */
+        lightboxImg.addEventListener("wheel", function (e) {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.15 : 0.15;
+            scale = clamp(scale + delta, 1, 4);
+            updateTransform();
+        });
+
+        /* Helpers */
+        function getDistance(t1, t2) {
+            return Math.sqrt(
+                Math.pow(t1.clientX - t2.clientX, 2) +
+                Math.pow(t1.clientY - t2.clientY, 2)
+            );
+        }
+
+        function clamp(value, min, max) {
+            return Math.max(min, Math.min(max, value));
+        }
+    </script>
+
+</body>
+
+
+</html>
